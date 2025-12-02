@@ -1,0 +1,14 @@
+name: First yaml ever
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  first_job_ever:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Hello
+        run: |
+          echo 'Hello world!'
