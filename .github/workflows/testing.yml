@@ -26,8 +26,8 @@ jobs:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
       - name: test III the real ultimate showdown
-        if: ${{ env.CONDITION == true}}
+        if: ${{ env.CONDITION == 'true'}}
         run: echo 'worked'
       - name: test iiii the final defeat
-        if: ${{ env.CONDITION == false}}
+        if: ${{ env.CONDITION == 'false'}}
         run: echo 'NOT worked'
