@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  CONDITION: ${{ contains(github.event.head_commit.message, '#skip') || contains(join(github.event.commits.*.message, ','), '#skip') }}
+
 jobs:
   a_test_job:
     runs-on: ubuntu-latest
@@ -22,6 +25,9 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
-      - name: testing II ultimate showdown
-        if: ${{ github.event.commits.head_commit.message == '#skip' }}
-        run: echo "TRUE THAT"
+      - name: test III the real ultimate showdown
+        if: ${{ env.CONDITION == true}}
+        run: echo 'worked'
+      - name: test iiii the final defeat
+        if: ${{ env.CONDITION == false}}
+        run: echo 'NOT worked'
