@@ -5,8 +5,11 @@ on:
     branches:
       - main
   pull_request:
-    branches: [main]
-    types: [opened, synchronize]
+    branches: [ main ]
+    types: [ opened, synchronize ]
+
+env:
+  SKIP_DEPLOYMENT_TAG: ${{ contains(github.event.head_commit.message, '#skip') || contains(join(github.event.commits.*.message, ','), '#skip') }}
 
 jobs:
   simple_deployment_pipeline:
@@ -25,10 +28,10 @@ jobs:
       - name: Test
         run: npm run test
       - name: Trigger deployment
-        if: ${{ github.event_name == 'push' && 1 > 2 }}
+        if: ${{ github.event_name == 'push' && env.SKIP_DEPLOYMENT_TAG == 'false' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [ simple_deployment_pipeline ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -36,7 +39,7 @@ jobs:
           fetch-depth: '0'
 
       - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && env.SKIP_DEPLOYMENT_TAG == 'false' }}
         uses: anothrNick/github-tag-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
