@@ -22,3 +22,6 @@ jobs:
         env:
           COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
         run: echo "$COMMIT_MESSAGES"
+      - name: testing II ultimate showdown
+        if: ${{ github.event.commits.head_commit.message == '#skip' }}
+        run: echo "TRUE THAT"
