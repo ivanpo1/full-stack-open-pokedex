@@ -33,6 +33,8 @@ jobs:
         if: ${{ github.event_name == 'push' && env.SKIP_DEPLOYMENT_TAG == 'false' }}
         id: final
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Failure Simulation
+        run: exit 1
       - name: Success Notification
         if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v2
