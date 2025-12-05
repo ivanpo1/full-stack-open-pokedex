@@ -33,17 +33,34 @@ jobs:
         if: ${{ github.event_name == 'push' && env.SKIP_DEPLOYMENT_TAG == 'false' }}
         id: final
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
-      - name: Test Success Notification
+      - name: Success Notification
+        if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v2
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_MINE }}
-          username: OnlyTest2
-          text: Successfully Deployed
+          username: Discordia Bot
+          text: Deployment Successful
           severity: info
           color: '#1da326'
           title: Success
-          description: Testing Description. Repo ${{ github.event.repository.html_url }}
-          footer: Commit by ${{ github.event.commits.committer.username}}
+          description: |
+            **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
+            **Commit:** [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
+          footer: Commit by ${{github.actor}}
+      - name: Failure Notification
+        if: ${{ failure() }}
+        uses: rjstone/discord-webhook-notify@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_MINE }}
+          username: Discordia Bot
+          text: Deployment Failed
+          severity: error
+          color: '#c73316'
+          title: Failure
+          description: |
+            **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
+            **Commit:** [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
+          footer: Commit by ${{github.actor}}
   tag_release:
     needs: [ simple_deployment_pipeline ]
     runs-on: ubuntu-latest
