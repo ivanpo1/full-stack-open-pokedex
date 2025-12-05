@@ -33,6 +33,17 @@ jobs:
         if: ${{ github.event_name == 'push' && env.SKIP_DEPLOYMENT_TAG == 'false' }}
         id: final
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+      - name: Test Success Notification
+        uses: rjstone/discord-webhook-notify@v2
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_MINE }}
+          username: OnlyTest
+          text: Successfully Deployed
+          severity: info
+          color: '#1da326'
+          title: Success
+          description: Testing Description. Repo ${{ github.event.repository.html_url }}
+          footer: Commit by ${{ github.event.commits.committer.username}}
   tag_release:
     needs: [ simple_deployment_pipeline ]
     runs-on: ubuntu-latest
