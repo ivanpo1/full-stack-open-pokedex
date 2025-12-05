@@ -37,7 +37,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@v2
         with:
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK_MINE }}
-          username: OnlyTest
+          username: OnlyTest2
           text: Successfully Deployed
           severity: info
           color: '#1da326'
