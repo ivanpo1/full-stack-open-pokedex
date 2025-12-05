@@ -34,7 +34,7 @@ jobs:
         id: final
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Failure Simulation
-        run: exit 1
+        run: false
       - name: Success Notification
         if: ${{ success() }}
         uses: rjstone/discord-webhook-notify@v2
