@@ -53,7 +53,7 @@ jobs:
         if: ${{ failure() }}
         uses: rjstone/discord-webhook-notify@v2
         with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK_MINE }}
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
           username: Notification Bot
           text: Deployment Failed
           severity: error
