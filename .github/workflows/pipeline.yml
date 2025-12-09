@@ -37,32 +37,26 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Success Notification
         if: ${{ success() }}
-        uses: rjstone/discord-webhook-notify@v2
+        uses: appleboy/discord-action@v1.2.0
         with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_MINE }}
           username: Notification Bot
-          text: Deployment Successful
-          severity: info
           color: '#1da326'
-          title: Success
-          description: |
+          message: |
             **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
             **Commit:** [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
-          footer: Commit by ${{github.actor}}
+            Commit by ${{github.actor}}
       - name: Failure Notification
         if: ${{ failure() }}
-        uses: rjstone/discord-webhook-notify@v2
+        uses: appleboy/discord-action@v1.2.0
         with:
-          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          webhook_url: ${{ secrets.DISCORD_WEBHOOK_MINE }}
           username: Notification Bot
-          text: Deployment Failed
-          severity: error
           color: '#c73316'
-          title: Failure
-          description: |
+          message: |
             **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
             **Commit:** [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
-          footer: Commit by ${{github.actor}}
+            Commit by ${{github.actor}}
   tag_release:
     needs: [ simple_deployment_pipeline ]
     runs-on: ubuntu-latest
