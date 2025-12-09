@@ -37,26 +37,16 @@ jobs:
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
       - name: Success Notification
         if: ${{ success() }}
-        uses: appleboy/discord-action@v1.2.0
+        uses: hunghg255/action-notifications@master
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_MINE }}
-          username: Notification Bot
-          color: '#1da326'
-          message: |
-            **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
-            **Commit:** [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
-            Commit by ${{github.actor}}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Deployment"
       - name: Failure Notification
         if: ${{ failure() }}
-        uses: appleboy/discord-action@v1.2.0
+        uses: hunghg255/action-notifications@master
         with:
-          webhook_url: ${{ secrets.DISCORD_WEBHOOK_MINE }}
-          username: Notification Bot
-          color: '#c73316'
-          message: |
-            **Repository:** [${{ github.repository }}](${{ github.event.repository.html_url }})
-            **Commit:** [${{ github.event.head_commit.message }}](${{ github.event.head_commit.url }})
-            Commit by ${{github.actor}}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Deployment"
   tag_release:
     needs: [ simple_deployment_pipeline ]
     runs-on: ubuntu-latest
