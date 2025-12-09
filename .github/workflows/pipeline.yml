@@ -29,8 +29,6 @@ jobs:
         run: npm run build
       - name: Test
         run: npm run test
-      - name: Failure Simulation
-        run: false
       - name: Trigger deployment
         if: ${{ github.event_name == 'push' && env.SKIP_DEPLOYMENT_TAG == 'false' }}
         id: final
