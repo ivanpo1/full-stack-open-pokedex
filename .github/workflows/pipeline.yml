@@ -51,13 +51,13 @@ jobs:
         if: ${{ success() }}
         uses: hunghg255/action-notifications@master
         with:
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_MINE }}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "Deployment"
       - name: Failure Notification
         if: ${{ failure() }}
         uses: hunghg255/action-notifications@master
         with:
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_MINE }}
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "Deployment"
   tag_release:
     needs: [ simple_deployment_pipeline ]
